@@ -11,8 +11,7 @@ public class RoteLearn {
     private JFrame frame;
     private JTextArea question;
     private JTextArea answer;
-    private ArrayList<Card> cards;
-    DefaultListModel<Card> cardList;
+    private DefaultListModel<Card> cardList;
 
     public static void main(String[] args){
         RoteLearn root = new RoteLearn();
@@ -29,22 +28,22 @@ public class RoteLearn {
         //建立卡片清單
         cardList = new DefaultListModel<Card>();
         JList<Card> cardListBox = new JList<Card>(cardList);
+        cardListBox.setFixedCellWidth(100);
+        cardListBox.setFont(new Font("Arial", Font.BOLD, 15));
 
-        Font bigFont = new Font("sansserif", Font.BOLD, 24);
-        question = new JTextArea(4, 10);
+        Font bigFont = new Font("LucidaSansDemibold", Font.BOLD, 24);
+        question = new JTextArea(4, 20);
         question.setLineWrap(true);
         question.setWrapStyleWord(true);
         question.setFont(bigFont);
 
-        answer = new JTextArea(4, 10);
+        answer = new JTextArea(4, 20);
         answer.setLineWrap(true);
         answer.setWrapStyleWord(false);
         answer.setFont(bigFont);
 
         JButton nextButton = new JButton("Next");
         nextButton.addActionListener(new NextCardListener());
-
-        cards = new ArrayList<Card>();
 
         JLabel qLabel = new JLabel("Question:");
         qLabel.setFont(bigFont);
@@ -80,7 +79,6 @@ public class RoteLearn {
     private class NextCardListener implements ActionListener{
         public void actionPerformed(ActionEvent event) {
             Card card = new Card(question.getText(), answer.getText());
-            cards.add(card);
             cardList.add(0, card);
             clearCard();
         }
@@ -89,7 +87,7 @@ public class RoteLearn {
     private class SaveMenuListener implements ActionListener{
         public void actionPerformed(ActionEvent event){
             Card card = new Card(question.getText(), answer.getText());
-            cards.add(card);
+            cardList.add(0, card);
             JFileChooser fileSaver = new JFileChooser();
             fileSaver.showSaveDialog(frame);
             saveFile(fileSaver.getSelectedFile());
@@ -98,7 +96,7 @@ public class RoteLearn {
 
     private class NewMenuListener implements ActionListener{
         public void actionPerformed(ActionEvent event){
-            cards.clear();
+            cardList.clear();
             clearCard();
         }
     }
@@ -107,7 +105,7 @@ public class RoteLearn {
         try{
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-            for(Card c : cards){
+            for(Card c : (Card[]) cardList.toArray()){
                 writer.write(c.getQuestion() + "\t");
                 writer.write(c.getAnswer() + "\n");
             }
