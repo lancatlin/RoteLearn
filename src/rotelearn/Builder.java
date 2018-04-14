@@ -12,6 +12,12 @@ public class Builder {
     private JTextArea question;
     private JTextArea answer;
     private ArrayList<Card> cards;
+    private Action checkFocus = new AbstractAction(){
+        public void actionPerformed(ActionEvent ev){
+            answer.requestFocus();
+            System.out.println("check Focus");
+        }
+    };
 
     public static void main(String[] args){
         Builder builder = new Builder();
@@ -41,7 +47,9 @@ public class Builder {
         cards = new ArrayList<Card>();
 
         JLabel qLabel = new JLabel("Question:");
+        qLabel.setFont(bigFont);
         JLabel aLabel = new JLabel("Answer:");
+        aLabel.setFont(bigFont);
 
         mainPanel.add(qLabel);
         mainPanel.add(question);
@@ -53,8 +61,10 @@ public class Builder {
         JMenu fileMenu = new JMenu("File");
         JMenuItem newItem = new JMenuItem("New");
         JMenuItem saveItem = new JMenuItem("Save");
+
         newItem.addActionListener(new NewMenuListener());
         saveItem.addActionListener(new SaveMenuListener());
+        
         fileMenu.add(newItem);
         fileMenu.add(saveItem);
         menuBar.add(fileMenu);

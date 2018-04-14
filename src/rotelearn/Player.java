@@ -68,8 +68,11 @@ public class Player {
                 answer.setText(swapCard.getAnswer());
             }else{
                 Random random = new Random();
-                swapCard = cards.get(random.nextInt(cards.size()));
+                int num = random.nextInt(cards.size());
+                swapCard = cards.get(num);
+                cards.remove(num);
                 question.setText(swapCard.getQuestion());
+                answer.setText("");
             }
             isShowAnswer = !isShowAnswer;
         }
