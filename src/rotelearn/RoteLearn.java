@@ -7,23 +7,29 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Builder {
+public class RoteLearn {
     private JFrame frame;
     private JTextArea question;
     private JTextArea answer;
     private ArrayList<Card> cards;
+    DefaultListModel<Card> cardList;
 
     public static void main(String[] args){
-        Builder builder = new Builder();
-        builder.go();
+        RoteLearn root = new RoteLearn();
+        root.go();
     }
 
     public void go(){
         //go method
-        frame = new JFrame("RoteLearn Builder");
+        frame = new JFrame("RoteLearn");
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        //建立卡片清單
+        cardList = new DefaultListModel<Card>();
+        JList<Card> cardListBox = new JList<Card>(cardList);
+
         Font bigFont = new Font("sansserif", Font.BOLD, 24);
         question = new JTextArea(4, 10);
         question.setLineWrap(true);
@@ -65,6 +71,7 @@ public class Builder {
         frame.setJMenuBar(menuBar);
 
         frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
+        frame.getContentPane().add(BorderLayout.WEST, cardListBox);
         frame.setSize(400, 600);
         frame.setVisible(true);
 
@@ -74,6 +81,7 @@ public class Builder {
         public void actionPerformed(ActionEvent event) {
             Card card = new Card(question.getText(), answer.getText());
             cards.add(card);
+            cardList.add(0, card);
             clearCard();
         }
     }
@@ -82,7 +90,6 @@ public class Builder {
         public void actionPerformed(ActionEvent event){
             Card card = new Card(question.getText(), answer.getText());
             cards.add(card);
-
             JFileChooser fileSaver = new JFileChooser();
             fileSaver.showSaveDialog(frame);
             saveFile(fileSaver.getSelectedFile());
